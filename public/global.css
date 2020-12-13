@@ -88,7 +88,7 @@ linear-gradient(      to bottom right, rgba(0, 0, 0, 0.518), rgba(0, 0, 0, 0.756
 .start,
 .lose-screen {
   margin-left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(-50%);
   position: absolute;
   top: 50%;
   background: white;

@@ -14,14 +14,19 @@
   const food = { x: 8, y: 10 };
   let direction = "D";
   let score = 0;
+  let specialMoves = 0;
 
   let directionCheck = {};
 
   let coin = new Audio("./audio/coin.mp3");
+  coin.volume = 0.4;
   let hit = new Audio("./audio/hit.mp3");
   let lvlup = new Audio("./audio/lvlup.mp3");
+  lvlup.volume = 0.8;
   let lvlup2 = new Audio("./audio/lvlup2.mp3");
+  lvlup2.volume = 0.8;
   // let death = new Audio("./audio/death.mp3");
+  let reload = new Audio("./audio/reload.mp3");
   let death2 = new Audio("./audio/death2.mp3");
 
   const collidesWithSnake = ({ x, y }) => {
@@ -30,10 +35,10 @@
       if (x === piece.x && y === piece.y) collides = true;
     });
     if (collides) {
-        console.log("####################################")
-        console.log("colides x: ", x, "collides y: ", y);
-        console.log("collides snake: ", snake);
-    } 
+      console.log("####################################");
+      console.log("colides x: ", x, "collides y: ", y);
+      console.log("collides snake: ", snake);
+    }
 
     return collides;
   };
@@ -51,12 +56,12 @@
         //   console.log({snake})
         food.x = newX;
         food.y = newY;
-      } 
-    //   else {
-    //        console.log("###################################");
-    //       console.log("COLLIDES, x: ", newX," y: ", newY , "snek: ", snake);
-    //         console.log("###################################");
-    //   }
+      }
+      //   else {
+      //        console.log("###################################");
+      //       console.log("COLLIDES, x: ", newX," y: ", newY , "snek: ", snake);
+      //         console.log("###################################");
+      //   }
     }
   };
 
@@ -139,13 +144,15 @@
         coin.currentTime = 0;
         coin.play();
         score++;
-        if (score % 10 === 0) {
+
+        if (score % 20 === 0) specialMoves++;
+        if (score % 20 === 0) {
           theme.pause();
           lvlup2.play();
           setTimeout(() => {
             if (!lose) theme.play();
           }, 2400);
-        } else if (score % 5 === 0) {
+        } else if (score % 10 === 0) {
           theme.pause();
           lvlup.play();
           setTimeout(() => {
@@ -158,7 +165,7 @@
         });
         changeFoodLocation();
       }
-    //   console.log("updatedSnake: ", updatedSnake);
+      //   console.log("updatedSnake: ", updatedSnake);
       if (lose) {
         renderLose(updatedSnake);
       } else {
@@ -198,9 +205,18 @@
     start();
   };
 
+  const specialMove = () => {
+    if (specialMoves > 0) {
+      reload.play();
+      snake.length = snake.length - 15;
+      specialMoves--;
+    }
+  };
+
   const handleKeydown = ({ which }) => {
     if (which === 13 && !lose && !gameRunning) return start();
     if (which === 13 && lose && !gameRunning) return restart();
+    if (which === 32 && !lose && gameRunning) return specialMove();
     let head = snake[0];
     let neck = snake[1];
 
