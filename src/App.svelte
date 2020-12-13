@@ -73,9 +73,12 @@
       newX = Math.floor(Math.random() * 20 + 1);
       newY = Math.floor(Math.random() * 20 + 1);
       newValCollides = collidesWithSnake({ x: newX, y: newY });
-    }
-    food.x = newX;
+      if (!newValCollides) {
+            food.x = newX;
     food.y = newY;
+      }
+    }
+  
   };
 
   let lose = false;
