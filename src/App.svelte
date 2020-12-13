@@ -1,5 +1,3 @@
-<style></style>
-
 <script>
   import { onMount } from "svelte";
 
@@ -27,12 +25,16 @@
   let death2 = new Audio("./audio/death2.mp3");
 
   const collidesWithSnake = ({ x, y }) => {
-      console.log("colides x: ", x, "collides y: ", y);
-      console.log("collides snake: ", snake);
     let collides = false;
     snake.forEach((piece) => {
       if (x === piece.x && y === piece.y) collides = true;
     });
+    if (collides) {
+        console.log("####################################")
+        console.log("colides x: ", x, "collides y: ", y);
+        console.log("collides snake: ", snake);
+    } 
+
     return collides;
   };
 
@@ -45,9 +47,16 @@
       newY = Math.floor(Math.random() * 20 + 1);
       newValCollides = collidesWithSnake({ x: newX, y: newY });
       if (!newValCollides) {
+        //   console.log("!newValueCollides, x: ", newX," y: ", newY);
+        //   console.log({snake})
         food.x = newX;
         food.y = newY;
-      }
+      } 
+    //   else {
+    //        console.log("###################################");
+    //       console.log("COLLIDES, x: ", newX," y: ", newY , "snek: ", snake);
+    //         console.log("###################################");
+    //   }
     }
   };
 
@@ -73,7 +82,6 @@
         }, 1015);
       }, 850);
     }, 250);
-    console.log("render lose screen");
   };
 
   onMount(() => {
@@ -120,8 +128,6 @@
               break;
           }
           let cannibalism = collidesWithSnake(newHead);
-          console.log({newHead})
-          console.log({cannibalism})
           if (cannibalism) lose = true;
           else updatedSnake.push(newHead);
         } else {
@@ -152,9 +158,8 @@
         });
         changeFoodLocation();
       }
-      console.log("updatedSnake: ", updatedSnake);
+    //   console.log("updatedSnake: ", updatedSnake);
       if (lose) {
-        console.log("LOSE!");
         renderLose(updatedSnake);
       } else {
         draw(updatedSnake);
@@ -163,7 +168,6 @@
     };
 
     start = () => {
-      console.log("start");
       if (!gameRunning) {
         gameRunning = true;
         theme.play();
@@ -179,8 +183,8 @@
   });
 
   const restart = () => {
-    console.log("restart");
-     direction = "D";
+    direction = "D";
+    theme.currentTime = 0;
     gameboard.innerHTML = "";
     snake = [
       { x: 8, y: 3 },
