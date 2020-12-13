@@ -7,6 +7,7 @@
 
   let gameLoop;
   let gameboard;
+  let theme;
   let start;
   let snake = [
     { x: 8, y: 3 },
@@ -80,6 +81,9 @@
   let lose = false;
 
   const renderLose = (updatedSnake) => {
+    theme.pause();
+    lvlup.pause();
+    lvlup2.pause();
     hit.play();
     setTimeout(() => {
       death2.play();
@@ -141,8 +145,18 @@
         // food collision
         coin.play();
         score++;
-        if (score % 10 === 0) lvlup2.play();
-        else if (score % 5 === 0) lvlup.play();
+        if (score % 10 === 0) {
+                theme.pause(); lvlup2.play();  
+                setTimeout(()=>{
+                    if (!lose) theme.play();
+                }, 2350); 
+        }
+        else if (score % 5 === 0){  
+            theme.pause(); lvlup.play();  
+             setTimeout(()=>{
+                    if (!lose) theme.play();
+                }, 1400); 
+        };
         updatedSnake.push({
           x: snake[snake.length - 1].x,
           y: snake[snake.length - 1].y,
@@ -160,13 +174,14 @@ console.log("updatedSnake: ", directionCheck, updatedSnake);
     };
 
     start = () => {
+        theme.play();
       gameLoop = setInterval(() => {
         if (lose) {
           clearInterval(gameLoop);
         } else {
           newFrame();
         }
-      }, 90);
+      }, 95);
     };
   });
 </script>
@@ -176,7 +191,9 @@ console.log("updatedSnake: ", directionCheck, updatedSnake);
 <div class="container">
     <div class="score">{score}</div>
     <div class="game-board" bind:this="{gameboard}">
-        <button class="start" on:click="{start}"><h2>start</h2></button>
+        <h2 class="title">snake</h2>
+        <button class="start" on:click="{start}"><h2>play</h2></button>
     </div>
     <div class="score">{score}</div>
 </div>
+<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3"> </audio>
