@@ -11,19 +11,22 @@
   const food = { x: 8, y: 10 };
   let direction = "D";
 
+
+let directionCheck = {}
+
   const handleKeydown = ({ which }) => {
     switch (which) {
       case 37:
-        if (direction !== "R") direction = "L";
+        if (!directionCheck.R) direction = "L";
         break;
       case 38:
-        if (direction !== "D") direction = "U";
+        if (!directionCheck.D) direction = "U";
         break;
       case 39:
-        if (direction !== "L") direction = "R";
+        if (!directionCheck.L) direction = "R";
         break;
       case 40:
-        if (direction !== "U") direction = "D";
+        if (!directionCheck.U) direction = "D";
         break;
     }
   };
@@ -74,6 +77,16 @@
     };
 
     const newFrame = () => {
+          let head = snake[0];
+  let neck = snake[1];
+directionCheck = {
+    L: head.x < neck.x && head.y === neck.y,
+    R:head.x > neck.x && head.y === neck.y,
+    D: head.y > neck.y && head.x  === neck.x ,
+    U:head.y < neck.y && head.x  === neck.x 
+}
+
+
       const updatedSnake = [];
 
       snake.forEach((piece, i) => {
@@ -100,7 +113,7 @@
           updatedSnake.push({ x: snake[i - 1].x, y: snake[i - 1].y });
         }
       });
-      console.log("snake x: ", updatedSnake[0].x, "food x: ", food.x, "snake y: ", updatedSnake[0].y, "food y",food.y)
+    //   console.log("snake x: ", updatedSnake[0].x, "food x: ", food.x, "snake y: ", updatedSnake[0].y, "food y",food.y)
       if (updatedSnake[0].x === food.x && updatedSnake[0].y === food.y) {
         updatedSnake.push({
           x: snake[snake.length - 1].x,
