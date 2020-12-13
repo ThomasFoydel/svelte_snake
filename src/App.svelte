@@ -1,6 +1,4 @@
-<style>
-
-</style>
+<style></style>
 
 <script>
   import { onMount } from "svelte";
@@ -28,38 +26,9 @@
   // let death = new Audio("./audio/death.mp3");
   let death2 = new Audio("./audio/death2.mp3");
 
-  const handleKeydown = ({ which }) => {
-   if(which === 13) return start();
-    let head = snake[0];
-    let neck = snake[1];
-
-    directionCheck = {
-      L: head.x < neck.x,
-      R: head.x > neck.x,
-      D: head.y > neck.y,
-      U: head.y < neck.y,
-    };
-
-    if (!lose)
-      switch (which) {
-        case 37:
-          if (!directionCheck.R) direction = "L";
-          break;
-        case 38:
-          if (!directionCheck.D) direction = "U";
-          break;
-        case 39:
-          if (!directionCheck.L) direction = "R";
-          break;
-        case 40:
-          if (!directionCheck.U) direction = "D";
-          break;
-          default: 
-          null;
-      }
-  };
-
   const collidesWithSnake = ({ x, y }) => {
+      console.log("colides x: ", x, "collides y: ", y);
+      console.log("collides snake: ", snake);
     let collides = false;
     snake.forEach((piece) => {
       if (x === piece.x && y === piece.y) collides = true;
@@ -76,23 +45,33 @@
       newY = Math.floor(Math.random() * 20 + 1);
       newValCollides = collidesWithSnake({ x: newX, y: newY });
       if (!newValCollides) {
-            food.x = newX;
-    food.y = newY;
+        food.x = newX;
+        food.y = newY;
       }
     }
-  
   };
 
   let lose = false;
 
   const renderLose = (updatedSnake) => {
-      gameRunning = false;
     theme.pause();
     lvlup.pause();
     lvlup2.pause();
     hit.play();
+    const loseScreen = document.createElement("div");
+    loseScreen.className = "lose-screen";
+    loseScreen.innerHTML = `You died! Your score:<br/>&nbsp;<br/>&nbsp;`;
+    gameboard.append(loseScreen);
+
     setTimeout(() => {
       death2.play();
+      setTimeout(() => {
+        loseScreen.innerHTML = `You died! Your score:<br/>${score}<br/>&nbsp;`;
+        setTimeout(() => {
+          gameRunning = false;
+          loseScreen.innerHTML = `You died! Your score:<br/>${score}<br/>Hit return to replay`;
+        }, 1015);
+      }, 850);
     }, 250);
     console.log("render lose screen");
   };
@@ -103,7 +82,7 @@
       updatedSnake.forEach((piece, i) => {
         const snakePiece = document.createElement("div");
         snakePiece.className = "snake";
-        if (i > 0) snakePiece.style.opacity = 1 - (i / snake.length) * .8;
+        if (i > 0) snakePiece.style.opacity = 1 - (i / snake.length) * 0.8;
         snakePiece.style.gridRowStart = piece.y;
         snakePiece.style.gridColumnStart = piece.x;
         gameboard.appendChild(snakePiece);
@@ -141,6 +120,8 @@
               break;
           }
           let cannibalism = collidesWithSnake(newHead);
+          console.log({newHead})
+          console.log({cannibalism})
           if (cannibalism) lose = true;
           else updatedSnake.push(newHead);
         } else {
@@ -153,26 +134,27 @@
         coin.play();
         score++;
         if (score % 10 === 0) {
-                theme.pause(); lvlup2.play();  
-                setTimeout(()=>{
-                    if (!lose) theme.play();
-                }, 2400); 
+          theme.pause();
+          lvlup2.play();
+          setTimeout(() => {
+            if (!lose) theme.play();
+          }, 2400);
+        } else if (score % 5 === 0) {
+          theme.pause();
+          lvlup.play();
+          setTimeout(() => {
+            if (!lose) theme.play();
+          }, 1400);
         }
-        else if (score % 5 === 0){  
-            theme.pause(); lvlup.play();  
-             setTimeout(()=>{
-                    if (!lose) theme.play();
-                }, 1400); 
-        };
         updatedSnake.push({
           x: snake[snake.length - 1].x,
           y: snake[snake.length - 1].y,
         });
         changeFoodLocation();
       }
-console.log("updatedSnake: ", directionCheck, updatedSnake);
+      console.log("updatedSnake: ", updatedSnake);
       if (lose) {
-          console.log("LOSE!")
+        console.log("LOSE!");
         renderLose(updatedSnake);
       } else {
         draw(updatedSnake);
@@ -181,31 +163,78 @@ console.log("updatedSnake: ", directionCheck, updatedSnake);
     };
 
     start = () => {
-        if (!gameRunning){
-gameRunning = true;
-      
+      console.log("start");
+      if (!gameRunning) {
+        gameRunning = true;
         theme.play();
-      gameLoop = setInterval(() => {
-        if (lose) {
-          clearInterval(gameLoop);
-        } else {
-          newFrame();
-        }
-      }, 95);
+        gameLoop = setInterval(() => {
+          if (lose) {
+            clearInterval(gameLoop);
+          } else {
+            newFrame();
+          }
+        }, 95);
+      }
+    };
+  });
+
+  const restart = () => {
+    console.log("restart");
+     direction = "D";
+    gameboard.innerHTML = "";
+    snake = [
+      { x: 8, y: 3 },
+      { x: 8, y: 2 },
+      { x: 8, y: 1 },
+    ];
+    food.x = 8;
+    food.y = 10;
+    score = 0;
+    lose = false;
+    start();
+  };
+
+  const handleKeydown = ({ which }) => {
+    if (which === 13 && !lose && !gameRunning) return start();
+    if (which === 13 && lose && !gameRunning) return restart();
+    let head = snake[0];
+    let neck = snake[1];
+
+    directionCheck = {
+      L: head.x < neck.x,
+      R: head.x > neck.x,
+      D: head.y > neck.y,
+      U: head.y < neck.y,
     };
 
+    if (!lose)
+      switch (which) {
+        case 37:
+          if (!directionCheck.R) direction = "L";
+          break;
+        case 38:
+          if (!directionCheck.D) direction = "U";
+          break;
+        case 39:
+          if (!directionCheck.L) direction = "R";
+          break;
+        case 40:
+          if (!directionCheck.U) direction = "D";
+          break;
+        default:
+          null;
       }
-  });
+  };
 </script>
 
 <svelte:window on:keydown="{handleKeydown}" />
 
 <div class="container">
-    <div class="score">{score}</div>
-    <div class="game-board" bind:this="{gameboard}">
-        <h2 class="title">snake</h2>
-        <button class="start" on:click="{start}"><h2>play</h2></button>
-    </div>
-    <div class="score">{score}</div>
+  <div class="score">{score}</div>
+  <div class="game-board" bind:this="{gameboard}">
+    <h2 class="title">snake</h2>
+    <button class="start" on:click="{start}">Hit enter to play</button>
+  </div>
+  <div class="score">{score}</div>
 </div>
-<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3"> </audio>
+<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3"></audio>

@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Langar&display=swap');
 
 body {
-  font-family: 'Langar', sans-serif;
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -11,6 +10,10 @@ body {
   background-color: rgb(48, 48, 48);
   overflow: hidden;
   background-color: rgb(73, 73, 73);
+}
+
+* {
+  font-family: 'Langar', sans-serif;
 }
 
 .container {
@@ -45,6 +48,7 @@ linear-gradient(      to bottom right, rgba(0, 0, 0, 0.518), rgba(0, 0, 0, 0.756
     ),
     url('imgs/redstripe.jpg');
     */
+
 .game-board {
   background: linear-gradient(
       to bottom right,
@@ -81,12 +85,23 @@ linear-gradient(      to bottom right, rgba(0, 0, 0, 0.518), rgba(0, 0, 0, 0.756
   border-radius: 20rem;
 }
 
-.start {
+.start,
+.lose-screen {
   margin-left: 50%;
   transform: translateX(-50%);
-  width: 40%;
   position: absolute;
   top: 50%;
+  background: white;
+  color: black;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 1rem;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  min-width: 220px;
 }
 
 .title {
