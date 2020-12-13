@@ -5,38 +5,48 @@
   let container;
   let start;
   let snake = [
-    { x: 8, y: 1 },
-    { x: 8, y: 2 },
     { x: 8, y: 3 },
+    { x: 8, y: 2 },
+    { x: 8, y: 1 },
   ];
   const food = { x: 8, y: 10 };
   let direction = "D";
-let score =0;
+  let score = 0;
 
   let directionCheck = {};
 
   let coin = new Audio("./audio/coin.mp3");
-    let hit = new Audio("./audio/hit.mp3");
-      let lvlup = new Audio("./audio/lvlup.mp3");
-        let lvlup2 = new Audio("./audio/lvlup2.mp3");
- let death = new Audio("./audio/death.mp3");
-        let death2 = new Audio("./audio/death2.mp3");
+  let hit = new Audio("./audio/hit.mp3");
+  let lvlup = new Audio("./audio/lvlup.mp3");
+  let lvlup2 = new Audio("./audio/lvlup2.mp3");
+  // let death = new Audio("./audio/death.mp3");
+  let death2 = new Audio("./audio/death2.mp3");
 
   const handleKeydown = ({ which }) => {
-    switch (which) {
-      case 37:
-        if (!directionCheck.R) direction = "L";
-        break;
-      case 38:
-        if (!directionCheck.D) direction = "U";
-        break;
-      case 39:
-        if (!directionCheck.L) direction = "R";
-        break;
-      case 40:
-        if (!directionCheck.U) direction = "D";
-        break;
-    }
+    let head = snake[0];
+    let neck = snake[1];
+    directionCheck = {
+      L: head.x < neck.x && head.y === neck.y,
+      R: head.x > neck.x && head.y === neck.y,
+      D: head.y > neck.y && head.x === neck.x,
+      U: head.y < neck.y && head.x === neck.x,
+    };
+
+    if (!lose)
+      switch (which) {
+        case 37:
+          if (!directionCheck.R) direction = "L";
+          break;
+        case 38:
+          if (!directionCheck.D) direction = "U";
+          break;
+        case 39:
+          if (!directionCheck.L) direction = "R";
+          break;
+        case 40:
+          if (!directionCheck.U) direction = "D";
+          break;
+      }
   };
 
   const collidesWithSnake = ({ x, y }) => {
@@ -63,10 +73,10 @@ let score =0;
   let lose = false;
 
   const renderLose = (updatedSnake) => {
-      hit.play();
-      setTimeout(()=>{
-          death2.play();
-      }, 250);
+    hit.play();
+    setTimeout(() => {
+      death2.play();
+    }, 250);
     console.log("render lose screen");
   };
 
@@ -90,48 +100,42 @@ let score =0;
     };
 
     const newFrame = () => {
-      let head = snake[0];
-      let neck = snake[1];
-      directionCheck = {
-        L: head.x < neck.x && head.y === neck.y,
-        R: head.x > neck.x && head.y === neck.y,
-        D: head.y > neck.y && head.x === neck.x,
-        U: head.y < neck.y && head.x === neck.x,
-      };
-
       const updatedSnake = [];
 
       snake.forEach((piece, i) => {
         if (i === 0) {
+          let newHead = {};
           switch (direction) {
             case "U":
               if (piece.y === 0) lose = true;
-              updatedSnake.push({ x: piece.x, y: piece.y - 1 });
+              newHead = { x: piece.x, y: piece.y - 1 };
               break;
             case "D":
               if (piece.y === 21) lose = true;
-              updatedSnake.push({ x: piece.x, y: piece.y + 1 });
+              newHead = { x: piece.x, y: piece.y + 1 };
               break;
             case "L":
               if (piece.x === 0) lose = true;
-              updatedSnake.push({ x: piece.x - 1, y: piece.y });
+              newHead = { x: piece.x - 1, y: piece.y };
               break;
             case "R":
-              updatedSnake.push({ x: piece.x + 1, y: piece.y });
+              newHead = { x: piece.x + 1, y: piece.y };
               if (piece.x === 21) lose = true;
               break;
           }
+          let cannibalism = collidesWithSnake(newHead);
+          if (cannibalism) lose = true;
+          else updatedSnake.push(newHead);
         } else {
           updatedSnake.push({ x: snake[i - 1].x, y: snake[i - 1].y });
         }
       });
-      //   console.log("snake x: ", updatedSnake[0].x, "food x: ", food.x, "snake y: ", updatedSnake[0].y, "food y",food.y)
       if (updatedSnake[0].x === food.x && updatedSnake[0].y === food.y) {
-          // food collision
-          coin.play();
-          score++;
-           if(score % 10 === 0) lvlup2.play()
-           else  if(score % 5 === 0) lvlup.play();
+        // food collision
+        coin.play();
+        score++;
+        if (score % 10 === 0) lvlup2.play();
+        else if (score % 5 === 0) lvlup.play();
         updatedSnake.push({
           x: snake[snake.length - 1].x,
           y: snake[snake.length - 1].y,
@@ -142,7 +146,6 @@ let score =0;
       if (lose) {
         renderLose(updatedSnake);
       } else {
-        // console.log(updatedSnake);
         draw(updatedSnake);
         snake = updatedSnake;
       }
@@ -151,19 +154,17 @@ let score =0;
     start = () => {
       gameLoop = setInterval(() => {
         if (lose) {
-        clearInterval(gameLoop);
+          clearInterval(gameLoop);
         } else {
           newFrame();
         }
       }, 90);
     };
- 
   });
 </script>
 
-<button on:click={start}></button>
+<button on:click="{start}"></button>
 <svelte:window on:keydown="{handleKeydown}" />
-<div class="game-board" bind:this="{container}" >
-
-<button on:click={start}><h2>start</h2></button>
+<div class="game-board" bind:this="{container}">
+  <button on:click="{start}"><h2>start</h2></button>
 </div>
