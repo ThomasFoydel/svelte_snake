@@ -8,11 +8,11 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0;
-  background-color: black;
+  background-color: rgb(48, 48, 48);
 }
 
 .game-board {
-  background-color: rgb(90, 90, 90);
+  background-color: black;
   width: 100vmin;
   height: 100vmin;
   display: grid;
@@ -26,7 +26,11 @@ body {
 }
 
 .food {
-  background-color: #00fff2;
-  border: 0.25vmin solid black;
+  background: linear-gradient(
+    to bottom right,
+    rgb(114, 114, 114),
+    rgb(99, 46, 46)
+  );
+  border: 0.25vmin solid rgb(211, 67, 67);
   border-radius: 2rem;
 }
