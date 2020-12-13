@@ -1,8 +1,12 @@
+<style>
+
+</style>
+
 <script>
   import { onMount } from "svelte";
 
   let gameLoop;
-  let container;
+  let gameboard;
   let start;
   let snake = [
     { x: 8, y: 3 },
@@ -25,11 +29,12 @@
   const handleKeydown = ({ which }) => {
     let head = snake[0];
     let neck = snake[1];
+
     directionCheck = {
-      L: head.x < neck.x && head.y === neck.y,
-      R: head.x > neck.x && head.y === neck.y,
-      D: head.y > neck.y && head.x === neck.x,
-      U: head.y < neck.y && head.x === neck.x,
+      L: head.x < neck.x,
+      R: head.x > neck.x,
+      D: head.y > neck.y,
+      U: head.y < neck.y,
     };
 
     if (!lose)
@@ -46,6 +51,8 @@
         case 40:
           if (!directionCheck.U) direction = "D";
           break;
+          default: 
+          null;
       }
   };
 
@@ -62,8 +69,8 @@
     let newX;
     let newY;
     while (newValCollides) {
-      newX = Math.floor(Math.random() * 21 + 1);
-      newY = Math.floor(Math.random() * 21 + 1);
+      newX = Math.floor(Math.random() * 20 + 1);
+      newY = Math.floor(Math.random() * 20 + 1);
       newValCollides = collidesWithSnake({ x: newX, y: newY });
     }
     food.x = newX;
@@ -82,21 +89,21 @@
 
   onMount(() => {
     const draw = (updatedSnake) => {
-      container.innerHTML = "";
+      gameboard.innerHTML = "";
       updatedSnake.forEach((piece, i) => {
         const snakePiece = document.createElement("div");
         snakePiece.className = "snake";
-        if (i > 3) snakePiece.style.opacity = 1 - (i / snake.length) * 0.9;
+        if (i > 0) snakePiece.style.opacity = 1 - (i / snake.length) * .8;
         snakePiece.style.gridRowStart = piece.y;
         snakePiece.style.gridColumnStart = piece.x;
-        container.appendChild(snakePiece);
+        gameboard.appendChild(snakePiece);
       });
 
       const newFood = document.createElement("div");
       newFood.className = "food";
       newFood.style.gridRowStart = food.y;
       newFood.style.gridColumnStart = food.x;
-      container.appendChild(newFood);
+      gameboard.appendChild(newFood);
     };
 
     const newFrame = () => {
@@ -107,15 +114,15 @@
           let newHead = {};
           switch (direction) {
             case "U":
-              if (piece.y === 0) lose = true;
-              newHead = { x: piece.x, y: piece.y - 1 };
+              if (piece.y === 1) lose = true;
+              else newHead = { x: piece.x, y: piece.y - 1 };
               break;
             case "D":
               if (piece.y === 21) lose = true;
               newHead = { x: piece.x, y: piece.y + 1 };
               break;
             case "L":
-              if (piece.x === 0) lose = true;
+              if (piece.x === 1) lose = true;
               newHead = { x: piece.x - 1, y: piece.y };
               break;
             case "R":
@@ -142,8 +149,9 @@
         });
         changeFoodLocation();
       }
-
+console.log("updatedSnake: ", directionCheck, updatedSnake);
       if (lose) {
+          console.log("LOSE!")
         renderLose(updatedSnake);
       } else {
         draw(updatedSnake);
@@ -163,8 +171,12 @@
   });
 </script>
 
-<button on:click="{start}"></button>
 <svelte:window on:keydown="{handleKeydown}" />
-<div class="game-board" bind:this="{container}">
-  <button on:click="{start}"><h2>start</h2></button>
+
+<div class="container">
+    <div class="score">{score}</div>
+    <div class="game-board" bind:this="{gameboard}">
+        <button class="start" on:click="{start}"><h2>start</h2></button>
+    </div>
+    <div class="score">{score}</div>
 </div>
