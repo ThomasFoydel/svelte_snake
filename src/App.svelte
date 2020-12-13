@@ -28,9 +28,25 @@
     }
   };
 
+  const collidesWithSnake = ({x,y}) => {
+      let collides = false;
+      snake.forEach(piece => {
+          if (x === piece.x && y === piece.y) collides = true;
+      });
+      return collides;
+  }
+
   const changeFoodLocation = () => {
-    food.x = Math.floor(Math.random() * 21);
-    food.y = Math.floor(Math.random() * 21);
+    let newValCollides = true;
+    let newX;
+    let newY;
+    while(newValCollides){
+        newX = Math.floor(Math.random() * 21 + 1);
+        newY = Math.floor(Math.random() * 21 + 1);
+        newValCollides = collidesWithSnake({x: newX, y: newY});
+    }
+    food.x = newX;
+    food.y = newY;
   };
 
   let lose = false;
@@ -62,11 +78,6 @@
 
       snake.forEach((piece, i) => {
         if (i === 0) {
-          // console.log("Y ", piece.y, "X: ", piece.x);
-          //   if (piece.y - 1 === 0) {
-          //     console.log("LOSE!");
-          //     lose = true;
-          //   }
           switch (direction) {
             case "U":
               if (piece.y === 0) lose = true;
@@ -89,8 +100,8 @@
           updatedSnake.push({ x: snake[i - 1].x, y: snake[i - 1].y });
         }
       });
+      console.log("snake x: ", updatedSnake[0].x, "food x: ", food.x, "snake y: ", updatedSnake[0].y, "food y",food.y)
       if (updatedSnake[0].x === food.x && updatedSnake[0].y === food.y) {
-        console.log("hit!");
         updatedSnake.push({
           x: snake[snake.length - 1].x,
           y: snake[snake.length - 1].y,
@@ -101,7 +112,7 @@
       if (lose) {
         renderLose(updatedSnake);
       } else {
-        console.log(updatedSnake);
+        // console.log(updatedSnake);
         draw(updatedSnake);
         snake = updatedSnake;
       }
@@ -114,7 +125,7 @@
         } else {
           newFrame();
         }
-      }, 100);
+      },90);
     };
     start();
   });
