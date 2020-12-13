@@ -10,7 +10,7 @@ body {
   margin: 0;
   background-color: rgb(48, 48, 48);
   overflow: hidden;
-  background-color: rgb(110, 13, 13);
+  background-color: rgb(73, 73, 73);
 }
 
 .container {
@@ -24,9 +24,36 @@ body {
   text-align: center;
   width: 10%;
   transform: scaleY(5) scaleX(0.5);
+  min-width: 90px;
+  color: rgb(194, 194, 194);
 }
+
+/* 
+linear-gradient(      to bottom right, rgba(0, 0, 0, 0.518), rgba(0, 0, 0, 0.756)),
+    url('imgs/water.jpg');
+    
+    linear-gradient(      to bottom right, rgba(0, 0, 0, 0.318), rgba(0, 0, 0, 0.456)),
+    url('imgs/space.jpg');
+
+    linear-gradient(      to bottom right, rgba(0, 0, 0, 0.618), rgba(0, 0, 0, 0.756)),
+    url('imgs/brick.jpg');
+
+    linear-gradient(
+      to bottom right,
+      rgba(0, 0, 0, 0.718),
+      rgba(0, 0, 0, 0.856)
+    ),
+    url('imgs/redstripe.jpg');
+    */
 .game-board {
-  background-color: black;
+  background: linear-gradient(
+      to bottom right,
+      rgba(0, 0, 0, 0.418),
+      rgba(0, 0, 0, 0.556)
+    ),
+    url('imgs/space.jpg');
+  background-position: center center;
+  background-size: cover;
   width: 100vmin;
   height: 100vmin;
   display: grid;
@@ -38,7 +65,7 @@ body {
 .snake {
   /* background-color: #ff1010; */
   /* background: linear-gradient(#ff6a2f, #e60808); */
-  background: linear-gradient(to bottom right, #f82fff, #e60808);
+  background: linear-gradient(to bottom right, #de0bf1, #f10b0b);
   /* border: 0.25vmin solid rgb(255, 255, 255); */
   /* border: 0.25vmin solid #ca0000; */
   border-radius: 3px;

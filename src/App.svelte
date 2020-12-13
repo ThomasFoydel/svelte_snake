@@ -9,6 +9,7 @@
   let gameboard;
   let theme;
   let start;
+  let gameRunning = false;
   let snake = [
     { x: 8, y: 3 },
     { x: 8, y: 2 },
@@ -28,6 +29,7 @@
   let death2 = new Audio("./audio/death2.mp3");
 
   const handleKeydown = ({ which }) => {
+   if(which === 13) return start();
     let head = snake[0];
     let neck = snake[1];
 
@@ -84,6 +86,7 @@
   let lose = false;
 
   const renderLose = (updatedSnake) => {
+      gameRunning = false;
     theme.pause();
     lvlup.pause();
     lvlup2.pause();
@@ -146,13 +149,14 @@
       });
       if (updatedSnake[0].x === food.x && updatedSnake[0].y === food.y) {
         // food collision
+        coin.currentTime = 0;
         coin.play();
         score++;
         if (score % 10 === 0) {
                 theme.pause(); lvlup2.play();  
                 setTimeout(()=>{
                     if (!lose) theme.play();
-                }, 2350); 
+                }, 2400); 
         }
         else if (score % 5 === 0){  
             theme.pause(); lvlup.play();  
@@ -177,6 +181,9 @@ console.log("updatedSnake: ", directionCheck, updatedSnake);
     };
 
     start = () => {
+        if (!gameRunning){
+gameRunning = true;
+      
         theme.play();
       gameLoop = setInterval(() => {
         if (lose) {
@@ -186,6 +193,8 @@ console.log("updatedSnake: ", directionCheck, updatedSnake);
         }
       }, 95);
     };
+
+      }
   });
 </script>
 
