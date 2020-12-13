@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+
   let gameLoop;
   let container;
   let start;
@@ -10,8 +11,16 @@
   ];
   const food = { x: 8, y: 10 };
   let direction = "D";
+let score =0;
 
   let directionCheck = {};
+
+  let coin = new Audio("./audio/coin.mp3");
+    let hit = new Audio("./audio/hit.mp3");
+      let lvlup = new Audio("./audio/lvlup.mp3");
+        let lvlup2 = new Audio("./audio/lvlup2.mp3");
+ let death = new Audio("./audio/death.mp3");
+        let death2 = new Audio("./audio/death2.mp3");
 
   const handleKeydown = ({ which }) => {
     switch (which) {
@@ -54,6 +63,10 @@
   let lose = false;
 
   const renderLose = (updatedSnake) => {
+      hit.play();
+      setTimeout(()=>{
+          death2.play();
+      }, 250);
     console.log("render lose screen");
   };
 
@@ -114,6 +127,11 @@
       });
       //   console.log("snake x: ", updatedSnake[0].x, "food x: ", food.x, "snake y: ", updatedSnake[0].y, "food y",food.y)
       if (updatedSnake[0].x === food.x && updatedSnake[0].y === food.y) {
+          // food collision
+          coin.play();
+          score++;
+           if(score % 10 === 0) lvlup2.play()
+           else  if(score % 5 === 0) lvlup.play();
         updatedSnake.push({
           x: snake[snake.length - 1].x,
           y: snake[snake.length - 1].y,
@@ -133,15 +151,19 @@
     start = () => {
       gameLoop = setInterval(() => {
         if (lose) {
-          clearInterval(gameLoop);
+        clearInterval(gameLoop);
         } else {
           newFrame();
         }
       }, 90);
     };
-    start();
+ 
   });
 </script>
 
+<button on:click={start}></button>
 <svelte:window on:keydown="{handleKeydown}" />
-<div class="game-board" bind:this="{container}" />
+<div class="game-board" bind:this="{container}" >
+
+<button on:click={start}><h2>start</h2></button>
+</div>
