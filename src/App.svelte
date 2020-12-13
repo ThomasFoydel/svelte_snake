@@ -8,17 +8,30 @@
     { x: 8, y: 15 },
     { x: 8, y: 16 },
   ];
-  const food = { x: 8, y: 10 };
-  let snakeDirection = "L";
+  const food = { x: 12, y: 10 };
+  let snakeDirection = "D";
+
+  const handleKeydown = ({which})=> {
+      switch(which){
+          case 37: snakeDirection = "L"; break;
+          case 38: snakeDirection = "U"; break;
+          case 39: snakeDirection = "R"; break;
+          case 40: snakeDirection = "D"; break;
+        }
+  }
 
   let lose = false;
+
 
   const renderLose = (updatedSnake) => {
     console.log("render lose screen");
   };
-
+  
   onMount(() => {
-    const renderSnake = (updatedSnake) => {
+  
+
+
+    const draw = (updatedSnake) => {
       container.innerHTML = "";
       updatedSnake.forEach((piece) => {
         const snakePiece = document.createElement("div");
@@ -27,6 +40,12 @@
         snakePiece.style.gridColumnStart = piece.x;
         container.appendChild(snakePiece);
       });
+
+      const newFood = document.createElement("div");
+      newFood.className = "food";
+      newFood.style.gridRowStart = food.y;
+      newFood.style.gridColumnStart = food.x;
+      container.appendChild(newFood);
     };
 
     const calculateNewPos = () => {
@@ -34,22 +53,27 @@
 
       snake.forEach((piece, i) => {
         if (i === 0) {
-          if (piece.y - 1 === 0) {
-            console.log("LOSE!");
-            lose = true;
-          }
+            console.log("Y ", piece.y, "X: ", piece.x);
+        //   if (piece.y - 1 === 0) {
+        //     console.log("LOSE!");
+        //     lose = true;
+        //   }
           switch (snakeDirection) {
             case "U":
               updatedSnake.push({ x: piece.x, y: piece.y - 1 });
+               if (piece.y === 0) lose = true;
               break;
             case "D":
               updatedSnake.push({ x: piece.x, y: piece.y + 1 });
+               if (piece.y  === 21) lose = true;
               break;
             case "L":
               updatedSnake.push({ x: piece.x - 1, y: piece.y });
+               if (piece.x  === 0) lose = true;
               break;
             case "R":
               updatedSnake.push({ x: piece.x + 1, y: piece.y });
+                 if (piece.x  === 21) lose = true;
               break;
           }
         } else {
@@ -65,7 +89,7 @@
       if (lose) {
         renderLose(updatedSnake);
       } else {
-        renderSnake(updatedSnake);
+        draw(updatedSnake);
         snake = updatedSnake;
       }
     };
@@ -77,10 +101,11 @@
         } else {
           calculateNewPos();
         }
-      }, 400);
+      }, 100);
     };
     start();
   });
 </script>
 
+<svelte:window on:keydown={handleKeydown}/>
 <div class="game-board" bind:this="{container}" />
