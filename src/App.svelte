@@ -11,8 +11,7 @@
   const food = { x: 8, y: 10 };
   let direction = "D";
 
-
-let directionCheck = {}
+  let directionCheck = {};
 
   const handleKeydown = ({ which }) => {
     switch (which) {
@@ -31,22 +30,22 @@ let directionCheck = {}
     }
   };
 
-  const collidesWithSnake = ({x,y}) => {
-      let collides = false;
-      snake.forEach(piece => {
-          if (x === piece.x && y === piece.y) collides = true;
-      });
-      return collides;
-  }
+  const collidesWithSnake = ({ x, y }) => {
+    let collides = false;
+    snake.forEach((piece) => {
+      if (x === piece.x && y === piece.y) collides = true;
+    });
+    return collides;
+  };
 
   const changeFoodLocation = () => {
     let newValCollides = true;
     let newX;
     let newY;
-    while(newValCollides){
-        newX = Math.floor(Math.random() * 21 + 1);
-        newY = Math.floor(Math.random() * 21 + 1);
-        newValCollides = collidesWithSnake({x: newX, y: newY});
+    while (newValCollides) {
+      newX = Math.floor(Math.random() * 21 + 1);
+      newY = Math.floor(Math.random() * 21 + 1);
+      newValCollides = collidesWithSnake({ x: newX, y: newY });
     }
     food.x = newX;
     food.y = newY;
@@ -61,9 +60,10 @@ let directionCheck = {}
   onMount(() => {
     const draw = (updatedSnake) => {
       container.innerHTML = "";
-      updatedSnake.forEach((piece) => {
+      updatedSnake.forEach((piece, i) => {
         const snakePiece = document.createElement("div");
         snakePiece.className = "snake";
+        if (i > 3) snakePiece.style.opacity = 1 - (i / snake.length) * 0.9;
         snakePiece.style.gridRowStart = piece.y;
         snakePiece.style.gridColumnStart = piece.x;
         container.appendChild(snakePiece);
@@ -77,15 +77,14 @@ let directionCheck = {}
     };
 
     const newFrame = () => {
-          let head = snake[0];
-  let neck = snake[1];
-directionCheck = {
-    L: head.x < neck.x && head.y === neck.y,
-    R:head.x > neck.x && head.y === neck.y,
-    D: head.y > neck.y && head.x  === neck.x ,
-    U:head.y < neck.y && head.x  === neck.x 
-}
-
+      let head = snake[0];
+      let neck = snake[1];
+      directionCheck = {
+        L: head.x < neck.x && head.y === neck.y,
+        R: head.x > neck.x && head.y === neck.y,
+        D: head.y > neck.y && head.x === neck.x,
+        U: head.y < neck.y && head.x === neck.x,
+      };
 
       const updatedSnake = [];
 
@@ -113,7 +112,7 @@ directionCheck = {
           updatedSnake.push({ x: snake[i - 1].x, y: snake[i - 1].y });
         }
       });
-    //   console.log("snake x: ", updatedSnake[0].x, "food x: ", food.x, "snake y: ", updatedSnake[0].y, "food y",food.y)
+      //   console.log("snake x: ", updatedSnake[0].x, "food x: ", food.x, "snake y: ", updatedSnake[0].y, "food y",food.y)
       if (updatedSnake[0].x === food.x && updatedSnake[0].y === food.y) {
         updatedSnake.push({
           x: snake[snake.length - 1].x,
@@ -138,7 +137,7 @@ directionCheck = {
         } else {
           newFrame();
         }
-      },90);
+      }, 90);
     };
     start();
   });
