@@ -6,8 +6,8 @@
   let theme;
   let start;
   let gameRunning = false;
-  let backgroundIdx = 0;
 
+  let backgroundIdx = 0;
   const backgrounds = [
       "background: url('imgs/space.jpg');",
       "background: url('imgs/water.jpg');",
@@ -16,6 +16,14 @@
       "background: url('imgs/brick.jpg');",
       "background: url('imgs/paint.jpg');",
   ];
+
+  let foodColorIdx = 0;
+  const foodColors =[
+      "linear-gradient(to bottom right,rgb(241, 114, 255), rgb(212, 2, 2))",
+      "linear-gradient(to bottom left,rgb(241, 114, 255), rgb(212, 2, 2))",
+      "linear-gradient(to top left,rgb(241, 114, 255), rgb(212, 2, 2))",
+      "linear-gradient(to top right,rgb(241, 114, 255), rgb(212, 2, 2))"
+];
 
   let snake = [
     { x: 8, y: 3 },
@@ -93,10 +101,10 @@
     setTimeout(() => {
       death2.play();
       setTimeout(() => {
-        loseScreen.innerHTML = `You died! Your score:<br/>${score}<br/>&nbsp;`;
+        loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div>&nbsp;`;
         setTimeout(() => {
           gameRunning = false;
-          loseScreen.innerHTML = `You died! Your score:<br/>${score}<br/>Hit return to replay`;
+          loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div>Hit return to replay`;
         }, 1015);
       }, 850);
     }, 250);
@@ -115,10 +123,12 @@
       });
 
       const newFood = document.createElement("div");
+      newFood.style.background = foodColors[foodColorIdx % 4];
       newFood.className = "food";
       newFood.style.gridRowStart = food.y;
       newFood.style.gridColumnStart = food.x;
       gameboard.appendChild(newFood);
+      foodColorIdx++;
     };
 
     const newFrame = () => {
