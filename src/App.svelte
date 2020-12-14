@@ -19,13 +19,18 @@
   ];
 
   let foodColorIdx = 0;
-  const foodColors =[
-      "linear-gradient(to bottom right,rgb(241, 114, 255), rgb(212, 2, 2))",
-      "linear-gradient(to bottom left,rgb(241, 114, 255), rgb(212, 2, 2))",
-      "linear-gradient(to top left,rgb(241, 114, 255), rgb(212, 2, 2))",
-      "linear-gradient(to top right,rgb(241, 114, 255), rgb(212, 2, 2))"
+//   const foodColors =[
+//       "linear-gradient(to bottom right,rgb(241, 114, 255), rgb(212, 2, 2))",
+//       "linear-gradient(to bottom left,rgb(241, 114, 255), rgb(212, 2, 2))",
+//       "linear-gradient(to top left,rgb(241, 114, 255), rgb(212, 2, 2))",
+//       "linear-gradient(to top right,rgb(241, 114, 255), rgb(212, 2, 2))"
+// ];
+ const foodColors =[
+      "radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(244,59,207,1) 50%, rgba(38,237,255,1) 100%)",
+      "radial-gradient(circle, rgba(38,237,255,1) 0%, rgba(2,0,36,1) 11%, rgba(2,0,36,1) 48%, rgba(244,59,207,1) 85%, rgba(38,237,255,1) 100%)",
+      "radial-gradient(circle, rgba(38,237,255,1) 0%, rgba(2,0,36,1) 21%, rgba(2,0,36,1) 58%, rgba(244,59,207,1) 99%)",
+      "radial-gradient(circle, rgba(244,59,207,1) 0%, rgba(38,237,255,1) 48%, rgba(2,0,36,1) 83%)"
 ];
-
 
   let snake = [
     { x: 8, y: 3 },
