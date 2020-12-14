@@ -49,15 +49,21 @@ linear-gradient(      to bottom right, rgba(0, 0, 0, 0.518), rgba(0, 0, 0, 0.756
     url('imgs/redstripe.jpg');
     */
 
+.background-image {
+  width: 100vmin;
+  height: 100vmin;
+  position: absolute;
+  transition: opacity 0.5s ease;
+}
+.shadow {
+  width: 100vmin;
+  height: 100vmin;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.73);
+  backdrop-filter: blur(3px);
+}
+
 .game-board {
-  background: linear-gradient(
-      to bottom right,
-      rgba(0, 0, 0, 0.418),
-      rgba(0, 0, 0, 0.556)
-    ),
-    url('imgs/space.jpg');
-  background-position: center center;
-  background-size: cover;
   width: 100vmin;
   height: 100vmin;
   display: grid;
@@ -68,11 +74,11 @@ linear-gradient(      to bottom right, rgba(0, 0, 0, 0.518), rgba(0, 0, 0, 0.756
 
 .snake {
   /* background-color: #ff1010; */
-  /* background: linear-gradient(#ff6a2f, #e60808); */
-  background: linear-gradient(to bottom right, #de0bf1, #f10b0b);
+  background: linear-gradient(to bottom right, #ff8731, #c30065);
+  /* background: radial-gradient(#f10b0b 65%, #ffffff); */
   /* border: 0.25vmin solid rgb(255, 255, 255); */
   /* border: 0.25vmin solid #ca0000; */
-  border-radius: 3px;
+  /* border-radius: 10px; */
 }
 
 .food {

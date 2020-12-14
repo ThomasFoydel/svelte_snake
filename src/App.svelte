@@ -6,6 +6,17 @@
   let theme;
   let start;
   let gameRunning = false;
+  let backgroundIdx = 0;
+
+  const backgrounds = [
+      "background: url('imgs/space.jpg');",
+      "background: url('imgs/water.jpg');",
+      "background: url('imgs/redstripe.jpg');",
+      "background: url('imgs/stone.jpg');",
+      "background: url('imgs/brick.jpg');",
+      "background: url('imgs/paint.jpg');",
+  ];
+
   let snake = [
     { x: 8, y: 3 },
     { x: 8, y: 2 },
@@ -28,6 +39,7 @@
   // let death = new Audio("./audio/death.mp3");
   let reload = new Audio("./audio/reload.mp3");
   let death2 = new Audio("./audio/death2.mp3");
+  death2.volume = 0.6;
 
   const collidesWithSnake = ({ x, y }) => {
     let collides = false;
@@ -71,6 +83,7 @@
     theme.pause();
     lvlup.pause();
     lvlup2.pause();
+    reload.pause();
     hit.play();
     const loseScreen = document.createElement("div");
     loseScreen.className = "lose-screen";
@@ -145,14 +158,17 @@
         coin.play();
         score++;
 
-        if (score % 20 === 0) specialMoves++;
+        // if (score % 20 === 0) specialMoves++;
         if (score % 20 === 0) {
+                specialMoves++;
+            backgroundIdx++;
           theme.pause();
           lvlup2.play();
           setTimeout(() => {
             if (!lose) theme.play();
           }, 2400);
         } else if (score % 10 === 0) {
+          specialMoves++;
           theme.pause();
           lvlup.play();
           setTimeout(() => {
@@ -202,13 +218,17 @@
     food.y = 10;
     score = 0;
     lose = false;
+    backgroundIdx = 0;
+    specialMoves = 0;
     start();
   };
 
   const specialMove = () => {
     if (specialMoves > 0) {
+        console.log("spec moves: ", specialMoves)
+      reload.currentTime = 0;
       reload.play();
-      snake.length = snake.length - 15;
+      snake.length = snake.length - 8;
       specialMoves--;
     }
   };
@@ -251,10 +271,24 @@
 
 <div class="container">
   <div class="score">{score}</div>
-  <div class="game-board" bind:this="{gameboard}">
-    <h2 class="title">snake</h2>
-    <button class="start" on:click="{start}">Hit enter to play</button>
+  
+  <div class="game-board-container">
+        <div class="background-image" style="{backgrounds[0]} opacity: {backgroundIdx % 6 === 0 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
+        <div class="background-image" style="{backgrounds[1]} opacity: {backgroundIdx % 6 === 1 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
+        <div class="background-image" style="{backgrounds[2]} opacity: {backgroundIdx % 6 === 2 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
+        <div class="background-image" style="{backgrounds[3]} opacity: {backgroundIdx % 6 === 3 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
+        <div class="background-image" style="{backgrounds[4]} opacity: {backgroundIdx % 6 === 4 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
+        <div class="background-image" style="{backgrounds[5]} opacity: {backgroundIdx % 6 === 5 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
+      {#if backgroundIdx % 6 !== 0}
+      <div class="shadow"></div>
+        {/if}
+        <div class="game-board" bind:this="{gameboard}">
+            <h2 class="title">snake</h2>
+            <button class="start" on:click="{start}">Hit enter to play</button>
+        </div>
   </div>
+
   <div class="score">{score}</div>
 </div>
-<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3"></audio>
+
+<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3" />
