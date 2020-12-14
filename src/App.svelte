@@ -303,9 +303,12 @@
             <h2 class="title">snake</h2>
             <button class="start" on:click="{start}">Hit enter to play</button>
         </div>
+        {#if specialMoves > 0 }
+            <div class="special-moves">{specialMoves}x spaceBars</div>
+        {/if}
   </div>
 
   <div class="score">{score}</div>
 </div>
 
-<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3" ><track src="" kind="captions" srclang="en" label="english_captions"></audio>
+<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3"><track src="" kind="captions" srclang="en" label="english_captions"></audio>

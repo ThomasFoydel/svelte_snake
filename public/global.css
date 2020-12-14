@@ -113,3 +113,14 @@ button:hover {
 .final-score {
   color: #c30065;
 }
+
+.special-moves {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.425);
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.game-board-container {
+  position: relative;
+}
