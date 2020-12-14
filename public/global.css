@@ -39,15 +39,12 @@ body {
   width: 100vmin;
   height: 100vmin;
   position: absolute;
-  transition: opacity 0.25s ease;
-  filter: blur(0.4px);
 }
 .shadow {
   width: 100vmin;
   height: 100vmin;
   position: absolute;
-  background: rgba(0, 0, 0, 0.73);
-  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.43);
 }
 
 .game-board {

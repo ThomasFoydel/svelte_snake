@@ -11,20 +11,19 @@
   let backgroundIdx = 0;
   const backgrounds = [
       "background: url('imgs/space.jpg');",
+      "background: url('imgs/winter.jpg');",
       "background: url('imgs/water.jpg');",
-      "background: url('imgs/redstripe.jpg');",
+      "background: url('imgs/leaves.jpg');",
+      "background: url('imgs/mountain.jpg');",
+      "background: url('imgs/comb.jpg');",
+      "background: url('imgs/dust.jpg');",
       "background: url('imgs/stone.jpg');",
       "background: url('imgs/brick.jpg');",
-      "background: url('imgs/paint.jpg');",
+      "background: url('imgs/redstripe.jpg');",
   ];
 
   let foodColorIdx = 0;
-//   const foodColors =[
-//       "linear-gradient(to bottom right,rgb(241, 114, 255), rgb(212, 2, 2))",
-//       "linear-gradient(to bottom left,rgb(241, 114, 255), rgb(212, 2, 2))",
-//       "linear-gradient(to top left,rgb(241, 114, 255), rgb(212, 2, 2))",
-//       "linear-gradient(to top right,rgb(241, 114, 255), rgb(212, 2, 2))"
-// ];
+
  const foodColors =[
       "radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(244,59,207,1) 50%, rgba(38,237,255,1) 100%)",
       "radial-gradient(circle, rgba(38,237,255,1) 0%, rgba(2,0,36,1) 11%, rgba(2,0,36,1) 48%, rgba(244,59,207,1) 85%, rgba(38,237,255,1) 100%)",
@@ -51,10 +50,9 @@
   lvlup.volume = 0.8;
   let lvlup2 = new Audio("./audio/lvlup2.mp3");
   lvlup2.volume = 0.8;
-  // let death = new Audio("./audio/death.mp3");
   let reload = new Audio("./audio/reload.mp3");
-  let death2 = new Audio("./audio/death2.mp3");
-  death2.volume = 0.6;
+  let death = new Audio("./audio/death.mp3");
+  death.volume = 0.6;
 
   const collidesWithSnake = ({ x, y }) => {
     let collides = false;
@@ -106,7 +104,7 @@
     gameboard.append(loseScreen);
 
     setTimeout(() => {
-      death2.play();
+      death.play();
       setTimeout(() => {
         loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div>&nbsp;`;
         setTimeout(() => {
@@ -175,7 +173,6 @@
         coin.play();
         score++;
 
-        // if (score % 20 === 0) specialMoves++;
         if (score % 20 === 0) {
             intervalTime -= 1;
             specialMoves++;
@@ -187,6 +184,7 @@
             }, 2400);
         } else if (score % 10 === 0) {
             intervalTime -= 1;
+            backgroundIdx++;
             specialMoves++;
             theme.pause();
             lvlup.play();
@@ -210,8 +208,7 @@
     };
 
     start = () => {
-
-      if (!gameRunning) {
+        if (!gameRunning) {
         gameRunning = true;
         theme.play();
     
@@ -300,15 +297,8 @@
   <div class="score">{score}</div>
   
   <div class="game-board-container">
-        <div class="background-image" style="{backgrounds[0]} opacity: {backgroundIdx % 6 === 0 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
-        <div class="background-image" style="{backgrounds[1]} opacity: {backgroundIdx % 6 === 1 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
-        <div class="background-image" style="{backgrounds[2]} opacity: {backgroundIdx % 6 === 2 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
-        <div class="background-image" style="{backgrounds[3]} opacity: {backgroundIdx % 6 === 3 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
-        <div class="background-image" style="{backgrounds[4]} opacity: {backgroundIdx % 6 === 4 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
-        <div class="background-image" style="{backgrounds[5]} opacity: {backgroundIdx % 6 === 5 ? "1": "0"};  background-position: center center; background-size: cover; "></div>
-      {#if backgroundIdx % 6 !== 0}
-      <div class="shadow"></div>
-        {/if}
+      <div class="background-image" style="{backgrounds[backgroundIdx % 10 ]}; transition: background 1.2s ease; background-position: center center; background-size: cover; "></div>
+      <div class="shadow" style="opacity: {backgroundIdx % 10 !== 0 ? "1" : "0"}; transition: opacity 2s ease;" ></div>
         <div class="game-board" bind:this="{gameboard}">
             <h2 class="title">snake</h2>
             <button class="start" on:click="{start}">Hit enter to play</button>
@@ -318,4 +308,4 @@
   <div class="score">{score}</div>
 </div>
 
-<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3" />
+<audio bind:this="{theme}" id="music" loop src="audio/theme.mp3" ><track src="" kind="captions" srclang="en" label="english_captions"></audio>
