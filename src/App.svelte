@@ -6,6 +6,7 @@
   let theme;
   let start;
   let gameRunning = false;
+  let intervalTime = 105; 
 
   let backgroundIdx = 0;
   const backgrounds = [
@@ -24,6 +25,7 @@
       "linear-gradient(to top left,rgb(241, 114, 255), rgb(212, 2, 2))",
       "linear-gradient(to top right,rgb(241, 114, 255), rgb(212, 2, 2))"
 ];
+
 
   let snake = [
     { x: 8, y: 3 },
@@ -170,20 +172,22 @@
 
         // if (score % 20 === 0) specialMoves++;
         if (score % 20 === 0) {
-                specialMoves++;
+            intervalTime -= 1;
+            specialMoves++;
             backgroundIdx++;
-          theme.pause();
-          lvlup2.play();
-          setTimeout(() => {
-            if (!lose) theme.play();
-          }, 2400);
+            theme.pause();
+            lvlup2.play();
+            setTimeout(() => {
+                if (!lose) theme.play();
+            }, 2400);
         } else if (score % 10 === 0) {
-          specialMoves++;
-          theme.pause();
-          lvlup.play();
-          setTimeout(() => {
-            if (!lose) theme.play();
-          }, 1400);
+            intervalTime -= 1;
+            specialMoves++;
+            theme.pause();
+            lvlup.play();
+            setTimeout(() => {
+                if (!lose) theme.play();
+            }, 1400);
         }
         updatedSnake.push({
           x: snake[snake.length - 1].x,
@@ -201,21 +205,27 @@
     };
 
     start = () => {
+
       if (!gameRunning) {
         gameRunning = true;
         theme.play();
-        gameLoop = setInterval(() => {
-          if (lose) {
-            clearInterval(gameLoop);
+    
+        const timer = function() { 
+           if (lose) {
+            clearTimeout(gameLoop);
           } else {
             newFrame();
+            gameLoop = setTimeout(timer, intervalTime); 
           }
-        }, 95);
+        };
+        timer();
+
       }
     };
   });
 
   const restart = () => {
+      intervalTime = 105;
     direction = "D";
     theme.currentTime = 0;
     gameboard.innerHTML = "";
@@ -239,6 +249,8 @@
       reload.currentTime = 0;
       reload.play();
       snake.length = snake.length - 8;
+      intervalTime -= 5;
+      score += 20;
       specialMoves--;
     }
   };

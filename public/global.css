@@ -69,7 +69,7 @@ body {
 }
 
 .food {
-  border: 0.4vmin solid rgb(229, 229, 229);
+  /* border: 0.1vmin solid rgb(229, 229, 229); */
   border-radius: 20rem;
 }
 
