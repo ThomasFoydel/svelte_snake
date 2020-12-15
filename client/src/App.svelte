@@ -1,7 +1,7 @@
 <script>
 
   import { onMount } from "svelte";
-
+  import axios from "axios";
 
   let gameLoop;
   let gameboard;
@@ -11,9 +11,18 @@
   let intervalTime = 105; 
   let lose = false;
   let name = "";
+  let direction = "D";
+  let score = 0;
+  let specialMoves = 0;
+  let directionCheck = {};
 
   const changeNameInput = ({target: {value}}) => name = value;
-  const saveScore = () => {console.log(name, score)};
+  const saveScore = () => {
+    console.log("save score: ", name, score);
+    axios.post("/save-score", {name, score}).then(result=> {
+      console.log("result: ", result);
+    }).catch(err=> console.log({err}));
+  }
   let backgroundIdx = 0;
   const backgrounds = [
     "background: url('imgs/space.jpg');",
@@ -43,11 +52,7 @@
     { x: 8, y: 1 },
   ];
   const food = { x: 8, y: 10 };
-  let direction = "D";
-  let score = 0;
-  let specialMoves = 0;
-
-  let directionCheck = {};
+  
 
   let coin = new Audio("./audio/coin.mp3");
   coin.volume = 0.4;
