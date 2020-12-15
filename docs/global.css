@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Langar&display=swap');
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgb(43, 43, 43),
+    rgb(16, 16, 16)
+  );
+  overflow: hidden;
+}
+
+* {
+  font-family: 'Langar', sans-serif;
+}
+
+.container {
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.score {
+  font-size: 5rem;
+  text-align: center;
+  width: 10%;
+  transform: scaleY(5) scaleX(0.5);
+  min-width: 90px;
+  color: rgb(194, 194, 194);
+}
+
+.background-image {
+  width: 100vmin;
+  height: 100vmin;
+  position: absolute;
+}
+.shadow {
+  width: 100vmin;
+  height: 100vmin;
+  position: absolute;
+  /* background: linear-gradient(rgba(0, 0, 0, 0.43), rgba(0, 0, 0, 0.83)); */
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 1));
+}
+
+.game-board {
+  width: 100vmin;
+  height: 100vmin;
+  display: grid;
+  grid-template-rows: repeat(21, 1fr);
+  grid-template-columns: repeat(21, 1fr);
+  position: relative;
+}
+
+.snake {
+  /* background-color: #ff1010; */
+  background: linear-gradient(to bottom right, #ff8731, #c30065);
+  /* background: radial-gradient(#f10b0b 65%, #ffffff); */
+  /* border: 0.25vmin solid rgb(255, 255, 255); */
+  /* border: 0.25vmin solid #ca0000; */
+  border-radius: 2px;
+}
+
+.food {
+  /* border: 0.1vmin solid rgb(229, 229, 229); */
+  border-radius: 20rem;
+}
+
+.start,
+.lose-screen {
+  margin-left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  position: absolute;
+  top: 50%;
+  background: linear-gradient(rgb(246, 246, 246), rgb(212, 212, 212));
+  color: rgb(0, 0, 0);
+  text-align: center;
+  /* padding: 1rem; */
+  border-radius: 1rem;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  /* background: red; */
+  font-size: 1.2rem;
+  min-width: 220px;
+}
+
+.title {
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  color: white;
+  font-size: 3rem;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+button:hover {
+  color: #c30065;
+}
+
+.final-score {
+  color: #c30065;
+}
+
+.special-moves {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.637);
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.game-board-container {
+  position: relative;
+}
+
+.overlay-score {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.822);
+  left: 1rem;
+  bottom: 1rem;
+  font-size: 1.4rem;
+}
