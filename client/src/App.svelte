@@ -2,25 +2,30 @@
 
   import { onMount } from "svelte";
 
+
   let gameLoop;
   let gameboard;
   let theme;
   let start;
   let gameRunning = false;
   let intervalTime = 105; 
+  let lose = false;
+  let name = "";
 
+  const changeNameInput = ({target: {value}}) => name = value;
+  const saveScore = () => {console.log(name, score)};
   let backgroundIdx = 0;
   const backgrounds = [
-      "background: url('imgs/comb.jpg');",
-      "background: url('imgs/space.jpg');",
-      "background: url('imgs/winter.jpg');",
-      "background: url('imgs/water.jpg');",
-      "background: url('imgs/leaves.jpg');",
-      "background: url('imgs/mountain.jpg');",
-      "background: url('imgs/dust.jpg');",
-      "background: url('imgs/stone.jpg');",
-      "background: url('imgs/brick.jpg');",
-      "background: url('imgs/redstripe.jpg');",
+    "background: url('imgs/space.jpg');",
+    "background: url('imgs/comb.jpg');",
+    "background: url('imgs/mountain.jpg');",
+    "background: url('imgs/leaves.jpg');",
+    "background: url('imgs/winter.jpg');",
+    "background: url('imgs/water.jpg');",
+    "background: url('imgs/brick.jpg');",
+    "background: url('imgs/redstripe.jpg');",
+    "background: url('imgs/stone.jpg');",
+    "background: url('imgs/dust.jpg');",
   ];
 
   let foodColorIdx = 0;
@@ -57,44 +62,38 @@
   let death = new Audio("./audio/death.mp3");
   death.volume = 0.6;
 
-  const collidesWithSnake = ({ x, y }) => {
-    let collides = false;
-    snake.forEach((piece) => {
-      if (x === piece.x && y === piece.y) collides = true;
-    });
-    // if (collides) {
-    //   console.log("####################################");
-    //   console.log("colides x: ", x, "collides y: ", y);
-    //   console.log("collides snake: ", snake);
-    // }
 
-    return collides;
-  };
+  const clearOfSnake = ({x,y}) => {
+    let clear = true;
+     snake.forEach((piece) => {
+      if (x === piece.x && y === piece.y) clear = false;
+    });
+    return clear;
+  }
 
   const changeFoodLocation = () => {
-    let newValCollides = true;
+    let noCollide = false;
     let newX;
     let newY;
-    while (newValCollides) {
+    
+function newVals() {
       newX = Math.floor(Math.random() * 20 + 1);
       newY = Math.floor(Math.random() * 20 + 1);
-      newValCollides = collidesWithSnake({ x: newX, y: newY });
-      if (!newValCollides) {
-        //   console.log("!newValueCollides, x: ", newX," y: ", newY);
-        //   console.log({snake})
+      noCollide = clearOfSnake({ x: newX, y: newY });
+      if(noCollide) {
         food.x = newX;
         food.y = newY;
-      }
-      //   else {
-      //        console.log("###################################");
-      //       console.log("COLLIDES, x: ", newX," y: ", newY , "snek: ", snake);
-      //         console.log("###################################");
-      //   }
-    }
+      } else if(!noCollide) {
+        newVals()
+      } 
+    };
+    newVals();
   };
 
-  let lose = false;
 
+
+
+  
   const renderLose = (updatedSnake) => {
     theme.pause();
     lvlup.pause();
@@ -103,20 +102,55 @@
     hit.play();
     const loseScreen = document.createElement("div");
     loseScreen.className = "lose-screen";
-    loseScreen.innerHTML = `You died! Your score:<br/>&nbsp;<br/>&nbsp;`;
+
+    loseScreen.innerHTML = `<div>You died! Your score:<div/><div/><div/>`;
     gameboard.append(loseScreen);
 
     setTimeout(() => {
       death.play();
       setTimeout(() => {
-        loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div>&nbsp;`;
-        setTimeout(() => {
-          gameRunning = false;
-          loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div>Hit return to replay`;
-        }, 1015);
-      }, 850);
-    }, 250);
+        loseScreen.innerHTML = `
+        <div>You died! Your score:<div/>
+        <div class="final-score">${score}</div>
+        <div/>
+        <div/>
+        <div/>`;
+          setTimeout(() => {
+            gameRunning = false;
+            loseScreen.innerHTML = `
+            <div>You died! Your score:<div/>
+            <div class="final-score">${score}</div>
+            <input id="save-input" placeholder="name" />
+            <button id="save-btn">save score</button>
+            <div class="replay-text">Hit return to replay</div>`;
+            document.getElementById("save-input").addEventListener("change", changeNameInput);
+            document.getElementById("save-btn").addEventListener("click", saveScore);
+        }, 1000);
+      }, 700);
+    }, 150);
+
+    // loseScreen.innerHTML = `You died! Your score:<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;`;
+    // gameboard.append(loseScreen);
+
+    // setTimeout(() => {
+    //   death.play();
+    //   setTimeout(() => {
+    //     loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div>&nbsp;<br/>&nbsp;`;
+    //     setTimeout(()=> {
+    //       loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div><button id="save-btn"" >save score</button><br/>&nbsp;`;
+    //        document.getElementById("save-btn").addEventListener("click", saveScore);
+    //       setTimeout(() => {
+    //         gameRunning = false;
+    //         loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div><button id="save-btn">save score</button></br>Hit return to replay`;
+    //         document.getElementById("save-btn").addEventListener("click", saveScore);
+        
+    //     }, 1015);
+    //      }, 500)
+    //   }, 350);
+    // }, 250);
   };
+  
+ 
 
   onMount(() => {
     const draw = (updatedSnake) => {
@@ -163,7 +197,7 @@
               if (piece.x === 21) lose = true;
               break;
           }
-          let cannibalism = collidesWithSnake(newHead);
+          let cannibalism = !clearOfSnake(newHead);
           if (cannibalism) lose = true;
           else updatedSnake.push(newHead);
         } else {
@@ -201,7 +235,6 @@
         });
         changeFoodLocation();
       }
-      //   console.log("updatedSnake: ", updatedSnake);
       if (lose) {
         renderLose(updatedSnake);
       } else {
@@ -230,7 +263,8 @@
   });
 
   const restart = () => {
-      intervalTime = 105;
+    intervalTime = 105;
+    name = "";
     direction = "D";
     theme.currentTime = 0;
     gameboard.innerHTML = "";
@@ -298,10 +332,8 @@
 <svelte:window on:keydown="{handleKeydown}" />
 
 <div class="container">
-  <!-- <div class="score">{score}</div> -->
-  
   <div class="game-board-container">
-      <div class="background-image" style="{backgrounds[backgroundIdx % 10 ]}; transition: background 1.2s ease; background-position: center center; background-size: cover; "></div>
+      <div class="background-image" style="{backgrounds[backgroundIdx % 10 ]}; transition: background 2s ease; background-position: center center; background-size: cover; "></div>
       <!-- <div class="shadow" style="opacity: {backgroundIdx % 10 !== 0 ? "1" : "0"}; transition: opacity 2s ease;" ></div> -->
       <div class="shadow" style="opacity: {lose ? "1" : "0.75"}; transition: opacity 1s ease;" ></div>
         <div class="game-board" bind:this="{gameboard}">
@@ -313,8 +345,6 @@
         {/if}
         <div class="overlay-score">score: {score}</div>
   </div>
-
-  <!-- <div class="score">{score}</div> -->
 </div>
 
 <audio bind:this="{theme}" id="music" loop src="audio/theme.mp3"><track src="" kind="captions" srclang="en" label="english_captions"></audio>

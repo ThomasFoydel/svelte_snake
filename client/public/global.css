@@ -57,7 +57,6 @@ body {
 }
 
 .snake {
-  /* background-color: #ff1010; */
   background: linear-gradient(to bottom right, #ff8731, #c30065);
   /* background: radial-gradient(#f10b0b 65%, #ffffff); */
   /* border: 0.25vmin solid rgb(255, 255, 255); */
@@ -76,22 +75,33 @@ body {
   transform: translateX(-50%) translateY(-50%);
   position: absolute;
   top: 50%;
-  background: linear-gradient(rgb(246, 246, 246), rgb(212, 212, 212));
+  background: linear-gradient(rgb(245, 245, 245), rgb(202, 202, 202));
   color: rgb(0, 0, 0);
   text-align: center;
-  /* padding: 1rem; */
   border-radius: 1rem;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: center;
-  justify-content: center;
-  /* background: red; */
-  font-size: 1.2rem;
-  min-width: 220px;
-}
 
+  font-size: 1.2rem;
+  width: 220px;
+}
+.lose-screen {
+  padding-top: 20px;
+  height: 260px;
+}
+.lose-screen div,
+.lose-screen button {
+  margin: 0.4rem 0;
+  height: 45px;
+}
+.lose-screen input {
+  text-align: center;
+}
+.lose-screen button {
+  border-radius: 5px;
+  padding: 0 20px;
+}
+.replay-text {
+  color: #c30065;
+}
 .title {
   margin-left: 50%;
   transform: translateX(-50%);

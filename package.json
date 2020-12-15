@@ -6,19 +6,18 @@
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "node index.js",
-    "server": "nodemon index.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "nodemon index.js"
   },
   "engines": {
     "node": "10.15.3",
     "npm": "6.9.0"
   },
-  "author": "",
+  "author": "Thomas Foydel",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.11.8"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",

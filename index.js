@@ -7,7 +7,7 @@ const cors = require('cors');
 // put your routes here
 
 // static file declaration
-app.use(express.static(path.join(__dirname, 'client/public/')));
+// app.use(express.static(path.join(__dirname, 'client/public/')));
 app.use(cors());
 // production mode
 if (process.env.NODE_ENV === 'production') {
