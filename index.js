@@ -5,10 +5,19 @@ const port = process.env.PORT || 8000;
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+// const Score = require('./models/Score');
 app.use(bodyParser.json());
 // put your routes here
-app.post('/save-score', (req, res) => {
-  res.send({ msg: 'great jorb' });
+app.post('/save-score', async ({ body: { name, score } }, res) => {
+  if (!name || !score)
+    return res.send({ err: `Missing ${!name ? 'name' : 'score'} field` });
+  else {
+    const newScore = new Score({ name, score });
+    newScore
+      .save()
+      .then((result) => res.send({ result }))
+      .catch((err) => res.send({ err }));
+  }
 });
 
 // static file declaration
