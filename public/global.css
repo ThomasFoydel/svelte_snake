@@ -7,7 +7,6 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0;
-
   background: linear-gradient(
     to bottom right,
     rgb(43, 43, 43),
@@ -44,7 +43,8 @@ body {
   width: 100vmin;
   height: 100vmin;
   position: absolute;
-  background: rgba(0, 0, 0, 0.43);
+  /* background: linear-gradient(rgba(0, 0, 0, 0.43), rgba(0, 0, 0, 0.83)); */
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 1));
 }
 
 .game-board {
@@ -97,7 +97,6 @@ body {
   transform: translateX(-50%);
   position: absolute;
   color: white;
-  top: 14%;
   font-size: 3rem;
 }
 
@@ -116,11 +115,19 @@ button:hover {
 
 .special-moves {
   position: absolute;
-  color: rgba(255, 255, 255, 0.425);
+  color: rgba(255, 255, 255, 0.637);
   right: 1rem;
   bottom: 1rem;
 }
 
 .game-board-container {
   position: relative;
+}
+
+.overlay-score {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.822);
+  left: 1rem;
+  bottom: 1rem;
+  font-size: 1.4rem;
 }

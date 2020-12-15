@@ -1,4 +1,5 @@
 <script>
+
   import { onMount } from "svelte";
 
   let gameLoop;
@@ -10,12 +11,12 @@
 
   let backgroundIdx = 0;
   const backgrounds = [
+      "background: url('imgs/comb.jpg');",
       "background: url('imgs/space.jpg');",
       "background: url('imgs/winter.jpg');",
       "background: url('imgs/water.jpg');",
       "background: url('imgs/leaves.jpg');",
       "background: url('imgs/mountain.jpg');",
-      "background: url('imgs/comb.jpg');",
       "background: url('imgs/dust.jpg');",
       "background: url('imgs/stone.jpg');",
       "background: url('imgs/brick.jpg');",
@@ -46,11 +47,13 @@
   let coin = new Audio("./audio/coin.mp3");
   coin.volume = 0.4;
   let hit = new Audio("./audio/hit.mp3");
+  hit.volume = 0.8;
   let lvlup = new Audio("./audio/lvlup.mp3");
   lvlup.volume = 0.8;
   let lvlup2 = new Audio("./audio/lvlup2.mp3");
   lvlup2.volume = 0.8;
   let reload = new Audio("./audio/reload.mp3");
+  reload.volume = 0.7;
   let death = new Audio("./audio/death.mp3");
   death.volume = 0.6;
 
@@ -59,11 +62,11 @@
     snake.forEach((piece) => {
       if (x === piece.x && y === piece.y) collides = true;
     });
-    if (collides) {
-      console.log("####################################");
-      console.log("colides x: ", x, "collides y: ", y);
-      console.log("collides snake: ", snake);
-    }
+    // if (collides) {
+    //   console.log("####################################");
+    //   console.log("colides x: ", x, "collides y: ", y);
+    //   console.log("collides snake: ", snake);
+    // }
 
     return collides;
   };
@@ -247,9 +250,10 @@
 
   const specialMove = () => {
     if (specialMoves > 0) {
-        console.log("spec moves: ", specialMoves)
       reload.currentTime = 0;
+      coin.currentTime = 0;
       reload.play();
+      coin.play();
       snake.length = snake.length - 8;
       intervalTime -= 5;
       score += 20;
@@ -294,11 +298,12 @@
 <svelte:window on:keydown="{handleKeydown}" />
 
 <div class="container">
-  <div class="score">{score}</div>
+  <!-- <div class="score">{score}</div> -->
   
   <div class="game-board-container">
       <div class="background-image" style="{backgrounds[backgroundIdx % 10 ]}; transition: background 1.2s ease; background-position: center center; background-size: cover; "></div>
-      <div class="shadow" style="opacity: {backgroundIdx % 10 !== 0 ? "1" : "0"}; transition: opacity 2s ease;" ></div>
+      <!-- <div class="shadow" style="opacity: {backgroundIdx % 10 !== 0 ? "1" : "0"}; transition: opacity 2s ease;" ></div> -->
+      <div class="shadow" style="opacity: {lose ? "1" : "0.75"}; transition: opacity 1s ease;" ></div>
         <div class="game-board" bind:this="{gameboard}">
             <h2 class="title">snake</h2>
             <button class="start" on:click="{start}">Hit enter to play</button>
@@ -306,9 +311,10 @@
         {#if specialMoves > 0 }
             <div class="special-moves">{specialMoves}x spaceBars</div>
         {/if}
+        <div class="overlay-score">score: {score}</div>
   </div>
 
-  <div class="score">{score}</div>
+  <!-- <div class="score">{score}</div> -->
 </div>
 
 <audio bind:this="{theme}" id="music" loop src="audio/theme.mp3"><track src="" kind="captions" srclang="en" label="english_captions"></audio>
