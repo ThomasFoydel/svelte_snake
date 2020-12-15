@@ -9,15 +9,16 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 // put your routes here
 app.post('/save-score', async ({ body: { name, score } }, res) => {
-  if (!name || !score)
-    return res.send({ err: `Missing ${!name ? 'name' : 'score'} field` });
-  else {
-    const newScore = new Score({ name, score });
-    newScore
-      .save()
-      .then((result) => res.send({ result }))
-      .catch((err) => res.send({ err }));
-  }
+  // if (!name || !score)
+  //   return res.send({ err: `Missing ${!name ? 'name' : 'score'} field` });
+  // else {
+  //   const newScore = new Score({ name, score });
+  //   newScore
+  //     .save()
+  //     .then((result) => res.send({ result }))
+  //     .catch((err) => res.send({ err }));
+  // }
+  res.send({ name, score });
 });
 
 // static file declaration
