@@ -9,6 +9,8 @@
   let start;
   let gameRunning = false;
   let intervalTime = 105; 
+  // let intervalAtPause = 105;
+  let paused = false;
   let lose = false;
   let name = "";
   let direction = "D";
@@ -105,7 +107,7 @@ function newVals() {
 
 
   
-  const renderLose = (updatedSnake) => {
+  const renderLose = () => {
     theme.pause();
     lvlup.pause();
     lvlup2.pause();
@@ -140,26 +142,6 @@ function newVals() {
         }, 1000);
       }, 700);
     }, 150);
-
-    // loseScreen.innerHTML = `You died! Your score:<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;`;
-    // gameboard.append(loseScreen);
-
-    // setTimeout(() => {
-    //   death.play();
-    //   setTimeout(() => {
-    //     loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div>&nbsp;<br/>&nbsp;`;
-    //     setTimeout(()=> {
-    //       loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div><button id="save-btn"" >save score</button><br/>&nbsp;`;
-    //        document.getElementById("save-btn").addEventListener("click", saveScore);
-    //       setTimeout(() => {
-    //         gameRunning = false;
-    //         loseScreen.innerHTML = `You died! Your score:<br/><div class="final-score">${score}</div><button id="save-btn">save score</button></br>Hit return to replay`;
-    //         document.getElementById("save-btn").addEventListener("click", saveScore);
-        
-    //     }, 1015);
-    //      }, 500)
-    //   }, 350);
-    // }, 250);
   };
   
  
@@ -311,10 +293,23 @@ function newVals() {
     }
   };
 
+  const pause = () => {
+    if (paused){
+      start();
+      paused = false;
+    } else {
+      paused = true;
+      gameRunning = false;
+      clearTimeout(gameLoop);
+      theme.pause();
+    }
+  };
+
   const handleKeydown = ({ which }) => {
     if (which === 13 && !lose && !gameRunning) return start();
     if (which === 13 && lose && !gameRunning) return restart();
     if (which === 32 && !lose && gameRunning) return specialMove();
+    if (which === 80) return pause();
     let head = snake[0];
     let neck = snake[1];
 
