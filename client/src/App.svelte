@@ -294,6 +294,7 @@ function newVals() {
   };
 
   const pause = () => {
+    if (lose) return;
     if (paused){
       start();
       paused = false;
