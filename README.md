@@ -1,32 +1,51 @@
-# a template for mern projects to be deployed to heroku
+<h1 align="center">Svelte Snake</h1>
+<h2 align="center">Table of Contents</h2>
 
-To make it run locally you need to run <b>npm i</b> from the root folder.
+<p align="center"><a href="#description">Description</a></p>
+<p align="center"><a href="#installation">Installation</a></p>
+<p align="center"><a href="#usage">Usage</a></p>
+<p align="center"><a href="#license">License</a></p>
+<p align="center"><a href="#questions">Questions</a></p>
 
-If you are using this as a starting point, then <b>cd client</b> and <b>npm i</b> again.
+<p align="center">
+<img src="./assets/demo.gif" alt="demo of the game snake being played">
+</p>
 
-If you already have an app built, just rename your React app project folder "client" and replace the client folder with it. Import/use your express routes in index.js.
+<h2 align="center">Description</h2>
 
-## To deploy to Heroku, all of these commands must be run in a terminal <u>from the root folder of your project</u>:
+<p align="center">It's the game snake. With some sound effect, music, and saveable high scores. Built with Node/Express on the backend, Svelte on the front end, and a MongoDB database to store the high scores</p>
+<br/><br/>
+<h2 align="center">Installation</h2>
 
-<b>heroku login</b>
+<p align="center">Download or fork, run npm install in the root folder and in the client folder</p>
+</br></br>
 
-<b>git init</b> Only run this one if you have not already initialized the git repository. If you already have your project hooked up to a GitHub repo do not run this one
+<h2 align="center">Usage</h2>
 
-<b>git add .</b>
+<p align="center">The root folder contains the backend and the client folder contains the front end. If you use the dev server on port 5000 from the client folder, you can use the hot reload. If you use just the backend server on <a href="http://localhost:8000">http://localhost:8000</a> you can access the index.html file there, and you can send requests from the front end to the backend, though you don't have the hot reload, so you need to run the run the npm run build command from the client folder to rebuild, and then refresh the browser window</p>
 
-<b>git commit -m “initial commit”</b>
+<h3 align="center">From the root folder:</h3>
 
-<b>heroku create</b>  
-this gives two urls, use the second one for the next command
+- `npm run dev` or `npm start` to start up the server on port 8000 (dev uses nodemon)
 
-<b>git remote add heroku </b>(url goes here)
-IGNORE FATAL ERROR MESSAGE
+<h3 align="center">From the client folder:</h3>
 
-<b>git push heroku master</b>
+- `npm run build` to build static files in the public folder
+- `npm run dev` to start a dev server on port 5000
+<br/><br/>
+<h2 align="center">License</h2>
 
-<b>heroku apps:rename</b> (new name goes here) <br/>
-Heroku gives you a random app name and you probably don't want to build a brand called 'Mysterious Meadow' or something so change the app name using this command
+<!-- ![License](https://img.shields.io/badge/license-MIT-blue) -->
+<p align="center"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License"></p>
+</br>
 
-<b>heroku open</b>
+<p align="center">Do whatever you want with this thing</p>
+</br></br>
 
-Enter your author name and license info into the README
+<h2 align="center">Questions</h2>
+
+<p align="center">Any questions on this or other projects can be directed to thomasjfoydel@gmail.com</p>
+<br/><br/>
+<h2 align="center">More Of My Projects</h2>
+
+<p align="center">Find more of my work on <a href="https://github.com/thomasfoydel">my GitHub</a></p>

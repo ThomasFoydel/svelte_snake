@@ -133,7 +133,7 @@ function newVals() {
             <div>You died! Your score:<div/>
             <div class="final-score">${score}</div>
             <input maxlength="12" id="save-input" placeholder="name" />
-            <button id="save-btn">save score</button>
+            <button id="save-btn">submit score</button>
             <div class="replay-text">Hit return to replay</div>`;
             document.getElementById("save-input").addEventListener("change", changeNameInput);
             document.getElementById("save-input").addEventListener("keydown", handleInputKeydown);
@@ -377,7 +377,6 @@ function newVals() {
 
   const changeNameInput = ({target: {value}}) => name = value;
   const saveScore = () => {
-    console.log("save score: ", name, score);
     axios.post("/save-score", {name, score}).then(({data: {savedScore, err}})=> {
       if (err) console.log({err});
       if (savedScore) displayScores();
@@ -394,7 +393,7 @@ function newVals() {
 
 <div class="container">
   <div class="game-board-container">
-      <div class="background-image" style="{backgrounds[backgroundIdx % 10 ]}; transition: background 2s ease; background-position: center center; background-size: cover; "></div>
+      <div class="background-image" style="{backgrounds[backgroundIdx % 10 ]}; transition: background 0.5s ease; background-position: center center; background-size: cover; "></div>
       <div class="shadow" style="opacity: {lose ? "1" : "0.75"}; transition: opacity 1s ease;" ></div>
         <div class="game-board" bind:this="{gameboard}">
             <h2 class="title">snake</h2>
