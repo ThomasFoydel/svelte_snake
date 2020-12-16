@@ -25,14 +25,14 @@ body {
   justify-content: space-around;
   align-items: center;
 }
-.score {
+/* .score {
   font-size: 5rem;
   text-align: center;
   width: 10%;
   transform: scaleY(5) scaleX(0.5);
   min-width: 90px;
   color: rgb(194, 194, 194);
-}
+} */
 
 .background-image {
   width: 100vmin;
@@ -140,4 +140,36 @@ button:hover {
   left: 1rem;
   bottom: 1rem;
   font-size: 1.4rem;
+}
+
+.scores-screen {
+  margin-left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  position: absolute;
+  top: 50%;
+  background: linear-gradient(rgb(245, 245, 245), rgb(202, 202, 202));
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  width: 220px;
+  overflow-y: scroll;
+  height: 200px;
+}
+
+.scores-screen .score-item {
+  justify-content: space-between;
+  display: flex;
+}
+
+.scores-screen .name {
+  color: #c30065;
+  margin: 0 1rem;
+  white-space: nowrap;
+  text-align: left;
+  min-width: 120px;
+}
+
+.scores-screen .score {
+  margin: 0 1rem;
 }

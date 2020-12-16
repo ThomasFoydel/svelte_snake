@@ -4,21 +4,37 @@ const app = express();
 const port = process.env.PORT || 8000;
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-// const Score = require('./models/Score');
+const Score = require('./models/Score');
 app.use(bodyParser.json());
 // put your routes here
-app.post('/save-score', async ({ body: { name, score } }, res) => {
-  // if (!name || !score)
+app.post('/save-score', ({ body: { name, score } }, res) => {
+  // if (!name || !score) {
   //   return res.send({ err: `Missing ${!name ? 'name' : 'score'} field` });
-  // else {
-  //   const newScore = new Score({ name, score });
-  //   newScore
-  //     .save()
-  //     .then((result) => res.send({ result }))
-  //     .catch((err) => res.send({ err }));
+  // } else {
+  const newScore = new Score({ name, score });
+  newScore
+    .save()
+    .then((savedScore) => {
+      res.send({ savedScore });
+    })
+    .catch((err) => {
+      res.send({ err });
+    });
   // }
-  res.send({ name, score });
+});
+
+app.get('/scores', (req, res) => {
+  Score.find({})
+    .sort({ score: -1 })
+    .limit(10)
+    .then((scores) => {
+      console.log(scores);
+      res.send({ scores });
+    })
+    .catch((err) => res.send({ err }));
 });
 
 // static file declaration
@@ -38,6 +54,13 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/public/index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Server is up on port ${port}!`);
-});
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then((res) => {
+    app.listen(port, () => {
+      console.log(`Server is up on port ${port}!`);
+    });
+  });

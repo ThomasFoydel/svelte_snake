@@ -16,13 +16,7 @@
   let specialMoves = 0;
   let directionCheck = {};
 
-  const changeNameInput = ({target: {value}}) => name = value;
-  const saveScore = () => {
-    console.log("save score: ", name, score);
-    axios.post("/save-score", {name, score}).then(result=> {
-      console.log("result: ", result);
-    }).catch(err=> console.log({err}));
-  }
+
   let backgroundIdx = 0;
   const backgrounds = [
     "background: url('imgs/space.jpg');",
@@ -125,10 +119,11 @@ function newVals() {
             loseScreen.innerHTML = `
             <div>You died! Your score:<div/>
             <div class="final-score">${score}</div>
-            <input id="save-input" placeholder="name" />
+            <input maxlength="12" id="save-input" placeholder="name" />
             <button id="save-btn">save score</button>
             <div class="replay-text">Hit return to replay</div>`;
             document.getElementById("save-input").addEventListener("change", changeNameInput);
+            document.getElementById("save-input").addEventListener("keydown", handleInputKeydown);
             document.getElementById("save-btn").addEventListener("click", saveScore);
         }, 1000);
       }, 700);
@@ -332,6 +327,43 @@ function newVals() {
           null;
       }
   };
+
+  const displayScores = () => {
+    gameboard.innerHTML = "";
+    const titleText = document.createElement("h2");
+    titleText.textContent = "high scores";
+
+    const endText = document.createElement("p");
+    endText.textContent = "hit return to play again";
+
+    const scoreScreen = document.createElement("div");
+    scoreScreen.className = "scores-screen";
+    let scoresHTML = "";
+    axios.get("scores").then(({data: {scores}})=> {
+        scores.forEach(({name, score})=> {
+        scoresHTML+=`<div class="score-item"><div class="name">${name}</div><div class="score">${score}</div></div>`;
+        })
+      scoreScreen.innerHTML = scoresHTML;
+      scoreScreen.prepend(titleText);
+      scoreScreen.append(endText);
+      gameboard.append(scoreScreen);
+     })
+  }
+
+
+  const changeNameInput = ({target: {value}}) => name = value;
+  const saveScore = () => {
+    console.log("save score: ", name, score);
+    axios.post("/save-score", {name, score}).then(({data: {savedScore, err}})=> {
+      if (err) console.log({err});
+      if (savedScore) displayScores();
+    }).catch(err=> console.log({err}));
+  }
+
+  var handleInputKeydown = (e)=> {
+    e.stopPropagation();
+    if(e.which === 13 ) displayScores();
+  }
 </script>
 
 <svelte:window on:keydown="{handleKeydown}" />
