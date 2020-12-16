@@ -10,10 +10,16 @@ require('dotenv').config();
 const Score = require('./models/Score');
 app.use(bodyParser.json());
 // put your routes here
-app.post('/save-score', ({ body: { name, score } }, res) => {
+app.post('/save-score', async ({ body: { name, score } }, res) => {
   // if (!name || !score) {
   //   return res.send({ err: `Missing ${!name ? 'name' : 'score'} field` });
   // } else {
+  // const foundScores = await Score.find().sort({ score: -1 }).limit(10);
+
+  // let inTopTen = false;
+
+  // foundScores.forEach;
+
   const newScore = new Score({ name, score });
   newScore
     .save()
