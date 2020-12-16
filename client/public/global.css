@@ -57,7 +57,7 @@ body {
 }
 
 .snake {
-  background: linear-gradient(to bottom right, #ff8731, #c30065);
+  /* background: linear-gradient(to bottom right, #ff8731, #c30065); */
   /* background: radial-gradient(#f10b0b 65%, #ffffff); */
   /* border: 0.25vmin solid rgb(255, 255, 255); */
   /* border: 0.25vmin solid #ca0000; */

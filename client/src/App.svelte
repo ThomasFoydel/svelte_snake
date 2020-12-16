@@ -16,7 +16,6 @@
   let specialMoves = 0;
   let directionCheck = {};
 
-
   let backgroundIdx = 0;
   const backgrounds = [
     "background: url('imgs/space.jpg');",
@@ -31,8 +30,21 @@
     "background: url('imgs/dust.jpg');",
   ];
 
-  let foodColorIdx = 0;
-
+  let snakeColorIdx = 0;
+  const snakeColors = [
+    "linear-gradient(to bottom right, #ff8731, #c30065)",
+    "linear-gradient(to bottom right, #ff31e6, #6f00c3)",
+    "linear-gradient(to bottom right, #31c6ff, #3000c3)",
+    "linear-gradient(to bottom right, #31ffec, #0045c3)",
+    "linear-gradient(to bottom right, #94ff31, #009fc3)",
+    "linear-gradient(to bottom right, #d6ff31, #15c300)",
+    "linear-gradient(to bottom right, #e9ff31, #c31b00)",
+    "linear-gradient(to bottom right, #31d0ff, #b700c3)",
+    "linear-gradient(to bottom right, #ff31b6, #e8eb12)",
+    "linear-gradient(to bottom right, #ffffff, #e1e1e1)"
+  ]
+  
+let foodColorIdx = 0;
  const foodColors =[
       "radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(244,59,207,1) 50%, rgba(38,237,255,1) 100%)",
       "radial-gradient(circle, rgba(38,237,255,1) 0%, rgba(2,0,36,1) 11%, rgba(2,0,36,1) 48%, rgba(244,59,207,1) 85%, rgba(38,237,255,1) 100%)",
@@ -158,6 +170,7 @@ function newVals() {
       updatedSnake.forEach((piece, i) => {
         const snakePiece = document.createElement("div");
         snakePiece.className = "snake";
+        snakePiece.style.background = snakeColors[snakeColorIdx % 10];
         if (i > 0) snakePiece.style.opacity = 1 - (i / snake.length) * 0.8;
         snakePiece.style.gridRowStart = piece.y;
         snakePiece.style.gridColumnStart = piece.x;
@@ -216,6 +229,7 @@ function newVals() {
             backgroundIdx++;
             theme.pause();
             lvlup2.play();
+            snakeColorIdx++;
             setTimeout(() => {
                 if (!lose) theme.play();
             }, 2400);
@@ -223,6 +237,7 @@ function newVals() {
             intervalTime -= 1;
             backgroundIdx++;
             specialMoves++;
+            snakeColorIdx++;
             theme.pause();
             lvlup.play();
             setTimeout(() => {
@@ -279,6 +294,7 @@ function newVals() {
     lose = false;
     backgroundIdx = 0;
     specialMoves = 0;
+    snakeColorIdx = 0;
     start();
   };
 
