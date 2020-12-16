@@ -203,7 +203,8 @@ function newVals() {
         // food collision
         coin.currentTime = 0;
         coin.play();
-        score++;
+     
+        intervalTime < 62 ? score += 5 : score++;
 
         if (score % 20 === 0) {
             intervalTime -= 1;
@@ -286,7 +287,7 @@ function newVals() {
       coin.currentTime = 0;
       reload.play();
       coin.play();
-      snake.length = snake.length - 8;
+      snake.length = snake.length - 8 > 4 ? snake.length - 8 : 4;
       intervalTime -= 5;
       score += 20;
       specialMoves--;
@@ -305,11 +306,24 @@ function newVals() {
     }
   };
 
+  const cheat = () => {
+    coin.currentTime = 0;
+    coin.play();
+    intervalTime += 11;
+  }
+  const speed = () => {
+    coin.currentTime = 0;
+    coin.play();
+    intervalTime -= 5;
+  }
+
   const handleKeydown = ({ which }) => {
     if (which === 13 && !lose && !gameRunning) return start();
     if (which === 13 && lose && !gameRunning) return restart();
     if (which === 32 && !lose && gameRunning) return specialMove();
     if (which === 80) return pause();
+    if (which === 189) return cheat();
+    if (which === 187) return speed();
     let head = snake[0];
     let neck = snake[1];
 
