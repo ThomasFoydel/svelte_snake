@@ -25,14 +25,6 @@ body {
   justify-content: space-around;
   align-items: center;
 }
-/* .score {
-  font-size: 5rem;
-  text-align: center;
-  width: 10%;
-  transform: scaleY(5) scaleX(0.5);
-  min-width: 90px;
-  color: rgb(194, 194, 194);
-} */
 
 .background-image {
   width: 100vmin;
@@ -43,7 +35,6 @@ body {
   width: 100vmin;
   height: 100vmin;
   position: absolute;
-  /* background: linear-gradient(rgba(0, 0, 0, 0.43), rgba(0, 0, 0, 0.83)); */
   background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 1));
 }
 
@@ -57,15 +48,10 @@ body {
 }
 
 .snake {
-  /* background: linear-gradient(to bottom right, #ff8731, #c30065); */
-  /* background: radial-gradient(#f10b0b 65%, #ffffff); */
-  /* border: 0.25vmin solid rgb(255, 255, 255); */
-  /* border: 0.25vmin solid #ca0000; */
   border-radius: 2px;
 }
 
 .food {
-  /* border: 0.1vmin solid rgb(229, 229, 229); */
   border-radius: 20rem;
 }
 
@@ -79,7 +65,6 @@ body {
   color: rgb(0, 0, 0);
   text-align: center;
   border-radius: 1rem;
-
   font-size: 1.2rem;
   width: 220px;
 }
@@ -172,4 +157,10 @@ button:hover {
 
 .scores-screen .score {
   margin: 0 1rem;
+}
+
+select:focus,
+button:focus,
+input:focus {
+  outline: 0;
 }

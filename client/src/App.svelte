@@ -9,7 +9,6 @@
   let start;
   let gameRunning = false;
   let intervalTime = 105; 
-  // let intervalAtPause = 105;
   let paused = false;
   let lose = false;
   let name = "";
@@ -35,14 +34,14 @@
   let snakeColorIdx = 0;
   const snakeColors = [
     "linear-gradient(to bottom right, #ff8731, #c30065)",
+    "linear-gradient(to bottom right, #e9ff31, #c31b00)",
     "linear-gradient(to bottom right, #ff31e6, #6f00c3)",
-    "linear-gradient(to bottom right, #31c6ff, #3000c3)",
+    "linear-gradient(to bottom right, #d6ff31, #15c300)",
     "linear-gradient(to bottom right, #31ffec, #0045c3)",
     "linear-gradient(to bottom right, #94ff31, #009fc3)",
-    "linear-gradient(to bottom right, #d6ff31, #15c300)",
-    "linear-gradient(to bottom right, #e9ff31, #c31b00)",
-    "linear-gradient(to bottom right, #31d0ff, #b700c3)",
     "linear-gradient(to bottom right, #ff31b6, #e8eb12)",
+    "linear-gradient(to bottom right, #31d0ff, #b700c3)",
+    "linear-gradient(to bottom right, #31c6ff, #3000c3)",
     "linear-gradient(to bottom right, #ffffff, #e1e1e1)"
   ]
   
@@ -396,7 +395,6 @@ function newVals() {
 <div class="container">
   <div class="game-board-container">
       <div class="background-image" style="{backgrounds[backgroundIdx % 10 ]}; transition: background 2s ease; background-position: center center; background-size: cover; "></div>
-      <!-- <div class="shadow" style="opacity: {backgroundIdx % 10 !== 0 ? "1" : "0"}; transition: opacity 2s ease;" ></div> -->
       <div class="shadow" style="opacity: {lose ? "1" : "0.75"}; transition: opacity 1s ease;" ></div>
         <div class="game-board" bind:this="{gameboard}">
             <h2 class="title">snake</h2>
