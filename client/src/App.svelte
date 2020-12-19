@@ -8,7 +8,7 @@
   let theme;
   let start;
   let gameRunning = false;
-  let intervalTime = 105; 
+  let intervalTime = 101; 
   let paused = false;
   let lose = false;
   let name = "";
@@ -260,7 +260,7 @@ function newVals() {
   });
 
   const restart = () => {
-    intervalTime = 105;
+    intervalTime = 101;
     name = "";
     direction = "D";
     theme.currentTime = 0;
@@ -379,7 +379,10 @@ function newVals() {
   const changeNameInput = ({target: {value}}) => name = value;
   const saveScore = () => {
     axios.post("/save-score", {name, score}).then(({data: {savedScore, err}})=> {
-      if (err) console.log({err});
+      if (err) {
+         console.log({err});
+         displayScores()
+      }
       if (savedScore) displayScores();
     }).catch(err=> console.log({err}));
   }
