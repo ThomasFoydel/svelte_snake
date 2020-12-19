@@ -14,21 +14,25 @@ app.post('/save-score', async ({ body: { name, score } }, res) => {
   // if (!name || !score) {
   //   return res.send({ err: `Missing ${!name ? 'name' : 'score'} field` });
   // } else {
-  // const foundScores = await Score.find().sort({ score: -1 }).limit(10);
-
+  const foundScores = await Score.find().sort({ score: -1 }).limit(10);
+  const lowestHighScore = foundScores[foundScores.length - 1];
+  if (score > lowestHighScore.score) {
+    const newScore = new Score({ name, score });
+    newScore
+      .save()
+      .then((savedScore) => {
+        res.send({ savedScore });
+      })
+      .catch((err) => {
+        res.send({ err });
+      });
+  } else {
+    res.send({ err: 'not high enough' });
+  }
   // let inTopTen = false;
 
   // foundScores.forEach;
 
-  const newScore = new Score({ name, score });
-  newScore
-    .save()
-    .then((savedScore) => {
-      res.send({ savedScore });
-    })
-    .catch((err) => {
-      res.send({ err });
-    });
   // }
 });
 
